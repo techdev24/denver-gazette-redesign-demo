@@ -150,6 +150,39 @@
     else if (head) head.insertAdjacentHTML('afterend', html);
   }
 
+  // ── sports widget (team cards + "More from Sports") ────────────────────────
+  // Per-team category feeds. Trailing slash avoids the WordPress 301 redirect.
+  var TEAMS = {
+    broncos:   BASE + '/category/denver-broncos/feed/',
+    nuggets:   BASE + '/category/denver-nuggets/feed/',
+    avalanche: BASE + '/category/colorado-avalanche/feed/',
+    rockies:   BASE + '/category/colorado-rockies/feed/'
+  };
+
+  // Update one team card with its latest story. The card LINK stays pointed at
+  // the team landing page (team.html?team=…); only the headline and timestamp
+  // go live. Logo, colors, league badge, and team name stay baked.
+  function fillTeam(slug, items) {
+    if (!items.length) return; // no items → keep the baked card untouched
+    var card = document.querySelector('.tc[data-team="' + slug + '"]');
+    if (!card) return;
+    var a = items[0];
+    var h = card.querySelector('.tc-headline');
+    if (h && a.title) h.textContent = a.title;
+    var when = card.querySelector('.tc-when');
+    if (when && a.time) when.textContent = a.time;
+  }
+
+  // Rebuild the "More from Sports" two-column list from the section-wide feed.
+  function fillSportsRest(items) {
+    var ul = document.getElementById('sw-rest-list');
+    if (!ul || !items.length) return;
+    ul.innerHTML = items.slice(0, 4).map(function (a) {
+      return '<li><a href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
+        esc(a.title) + '</a><span class="sw-rest-time">' + esc(a.time) + '</span></li>';
+    }).join('');
+  }
+
   // ── boot ───────────────────────────────────────────────────────────────────
   function load(zone, cat, fill) {
     fetchFeed(zone.url)
@@ -158,9 +191,17 @@
   }
 
   function init() {
+    // Top Table
     load(ZONES.sports, 'Sports', fillTiles);
     load(ZONES.local, 'Local', fillCenter);
     load(ZONES.latest, '', fillLatest);
+
+    // Sports widget — one fetch per team card (newest story each)…
+    Object.keys(TEAMS).forEach(function (slug) {
+      load({ url: TEAMS[slug], count: 1 }, 'Sports', function (items) { fillTeam(slug, items); });
+    });
+    // …plus the section-wide sports feed for the "More from Sports" list.
+    load({ url: BASE + '/category/sports/feed/', count: 6 }, 'Sports', fillSportsRest);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
