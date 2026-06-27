@@ -17,7 +17,7 @@
 
   // ── config ────────────────────────────────────────────────────────────────
   // Public proxy default. Replace with e.g. 'https://feeds.YOURDOMAIN.workers.dev/?url='
-  var FEED_PROXY = 'https://api.allorigins.win/raw?url=';
+  var FEED_PROXY = 'https://dg-feeds.techdev-d61.workers.dev/?url=';
   var BASE = 'https://www.denvergazette.com';
 
   var ZONES = {
