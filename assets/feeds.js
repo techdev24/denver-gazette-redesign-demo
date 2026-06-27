@@ -5,18 +5,12 @@
  *   #tt-center  → category/local-news/feed  · newest = hero (thumb+headline+dek), then 4 list items
  *   #rr-th      → /feed/  (site-wide latest) · "Top Headlines" list
  *
- * Static GitHub Pages can't fetch denvergazette.com RSS directly (no CORS header),
- * so requests go through FEED_PROXY. Default below is a public proxy so the demo works
- * on push; for production swap in the Cloudflare Worker in feed-proxy-worker.js (locked
- * to denvergazette.com, 5-min edge cache) and set FEED_PROXY to its URL.
- *
+ * Requests go through FEED_PROXY (Cloudflare Worker, locked to denvergazette.com).
  * Fail-safe: if any feed errors, that zone keeps its baked HTML — the page never breaks.
  */
 (function () {
   'use strict';
 
-  // ── config ────────────────────────────────────────────────────────────────
-  // Public proxy default. Replace with e.g. 'https://feeds.YOURDOMAIN.workers.dev/?url='
   var FEED_PROXY = 'https://dg-feeds.techdev-d61.workers.dev/?url=';
   var BASE = 'https://www.denvergazette.com';
 
@@ -26,12 +20,11 @@
     latest: { url: BASE + '/feed/',                      count: 8 }
   };
 
-  // Category → accent color (--sc), mirroring the baked sbt bands.
   var CAT_COLOR = {
     sports: '#1F4E79', politics: '#626262', crime: '#9A0A20', courts: '#9A0A20',
     business: '#3CC37D', opinion: '#7E7BF2', education: '#005F64',
-    local: '#0B0B0F', 'colorado news': '#0B0B0F', government: '#626262',
-    aerospace: '#1F4E79', 'arts & entertainment': '#C8102E'
+    local: '#0B0B0F', 'local news': '#0B0B0F', 'colorado news': '#0B0B0F',
+    government: '#626262', aerospace: '#1F4E79', 'arts & entertainment': '#C8102E'
   };
 
   // ── helpers ──────────────────────────────────────────────────────────────
@@ -45,6 +38,16 @@
   function truncate(s, n) { s = s || ''; return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : s; }
   function color(cat) { return CAT_COLOR[(cat || '').toLowerCase()] || '#C8102E'; }
 
+  // Safe getter: first child element with the given (possibly namespaced) tag name.
+  function tag(item, name) {
+    var els = item.getElementsByTagName(name);
+    return els && els.length ? els[0] : null;
+  }
+  function text(item, name) {
+    var el = tag(item, name);
+    return el ? (el.textContent || '') : '';
+  }
+
   function ago(pub) {
     if (!pub) return '';
     var d = new Date(pub); if (isNaN(d)) return '';
@@ -55,43 +58,45 @@
     return days === 1 ? '1 day ago' : days + ' days ago';
   }
 
-  // Image: media:content → media:thumbnail → enclosure → first <img> in content/description.
+  // Image: media:content → media:thumbnail → enclosure → first <img> in content:encoded/description.
   function imageOf(item) {
-    var m = item.querySelector('content[url], thumbnail[url]'); // media:* (namespace-agnostic in HTML-ish parse)
-    if (m && m.getAttribute('url')) return m.getAttribute('url');
-    var enc = item.querySelector('enclosure[url]');
-    if (enc && /image/i.test(enc.getAttribute('type') || '') ) return enc.getAttribute('url');
-    var body = (item.querySelector('encoded') && item.querySelector('encoded').textContent) ||
-               (item.querySelector('description') && item.querySelector('description').textContent) || '';
+    var mc = tag(item, 'media:content') || tag(item, 'content');
+    if (mc && mc.getAttribute && mc.getAttribute('url')) return mc.getAttribute('url');
+    var mt = tag(item, 'media:thumbnail') || tag(item, 'thumbnail');
+    if (mt && mt.getAttribute && mt.getAttribute('url')) return mt.getAttribute('url');
+    var enc = tag(item, 'enclosure');
+    if (enc && /image/i.test(enc.getAttribute('type') || '')) return enc.getAttribute('url');
+    var body = text(item, 'content:encoded') || text(item, 'encoded') || text(item, 'description') || '';
     var mm = body.match(/<img[^>]+src=["']([^"']+)["']/i);
     return mm ? mm[1] : '';
   }
   function categoryOf(item, fallback) {
-    var c = item.querySelector('category');
+    var c = tag(item, 'category');
     var t = c ? stripTags(decode(c.textContent)) : '';
     return t || fallback || '';
   }
 
   function parse(xml, count, fallbackCat) {
     var doc = new DOMParser().parseFromString(xml, 'text/xml');
-    if (doc.querySelector('parsererror')) throw new Error('parse');
-    var items = Array.prototype.slice.call(doc.querySelectorAll('item')).slice(0, count);
-    if (!items.length) throw new Error('empty');
+    // parsererror lives in the XHTML namespace; getElementsByTagName finds it safely.
+    if (doc.getElementsByTagName('parsererror').length) throw new Error('malformed-xml');
+    var items = Array.prototype.slice.call(doc.getElementsByTagName('item')).slice(0, count);
+    if (!items.length) throw new Error('no-items');
     return items.map(function (it) {
       return {
-        title: stripTags(decode((it.querySelector('title') || {}).textContent || '')),
-        url: ((it.querySelector('link') || {}).textContent || '').trim(),
-        dek: truncate(stripTags(decode((it.querySelector('description') || {}).textContent || '')), 180),
+        title: stripTags(decode(text(it, 'title'))),
+        url: (text(it, 'link') || '').trim(),
+        dek: truncate(stripTags(decode(text(it, 'description'))), 180),
         img: imageOf(it),
         cat: categoryOf(it, fallbackCat),
-        time: ago(((it.querySelector('pubDate') || {}).textContent || ''))
+        time: ago(text(it, 'pubDate'))
       };
     });
   }
 
   function fetchFeed(url) {
     return fetch(FEED_PROXY + encodeURIComponent(url), { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); });
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); });
   }
 
   // ── renderers (markup mirrors the baked cards so existing CSS applies) ─────
@@ -118,7 +123,6 @@
   // ── zone fills ─────────────────────────────────────────────────────────────
   function fillTiles(items) {
     var host = document.getElementById('tt-tiles'); if (!host) return;
-    // keep any data-keep tile (the Sponsored slot); drop the rest, then append live.
     Array.prototype.slice.call(host.querySelectorAll('.tt-tile')).forEach(function (el) {
       if (!el.hasAttribute('data-keep')) el.remove();
     });
@@ -145,7 +149,7 @@
   function load(zone, cat, fill) {
     fetchFeed(zone.url)
       .then(function (xml) { fill(parse(xml, zone.count, cat)); })
-      .catch(function (e) { /* keep baked fallback */ console.warn('[feeds] ' + zone.url + ' →', e.message); });
+      .catch(function (e) { console.warn('[feeds] ' + zone.url + ' →', e.message); });
   }
 
   function init() {
