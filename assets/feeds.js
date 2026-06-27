@@ -15,8 +15,8 @@
   var BASE = 'https://www.denvergazette.com';
 
   var ZONES = {
-    sports: { url: BASE + '/category/sports/feed',     count: 3 },
-    local:  { url: BASE + '/category/local-news/feed',  count: 5 }, // 1 hero + 4 list
+    sports: { url: BASE + '/category/sports/feed/',     count: 3 },
+    local:  { url: BASE + '/category/local-news/feed/',  count: 5 }, // 1 hero + 4 list
     latest: { url: BASE + '/feed/',                      count: 8 }
   };
 
@@ -77,6 +77,11 @@
   }
 
   function parse(xml, count, fallbackCat) {
+    // Some proxy/cache configs return the feed body twice (two <?xml>/<rss> roots
+    // concatenated). XML allows exactly one root, so a doubled body fails to parse.
+    // Defensively keep only the first complete document: cut at the first </rss>.
+    var end = xml.indexOf('</rss>');
+    if (end !== -1) xml = xml.slice(0, end + 6);
     var doc = new DOMParser().parseFromString(xml, 'text/xml');
     // parsererror lives in the XHTML namespace; getElementsByTagName finds it safely.
     if (doc.getElementsByTagName('parsererror').length) throw new Error('malformed-xml');
