@@ -236,6 +236,9 @@ main{max-width:1400px;margin:0 auto;padding:20px 24px 40px}
 .sl-t{font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-weight:900;font-size:14px;line-height:1.18;letter-spacing:-.003em;text-wrap:balance}
 .sl-a:hover .sl-t{color:var(--red)}
 .sl-sbt{font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sc,var(--mute));font-weight:600;border-left:3px solid var(--sc,var(--mute));padding-left:6px;margin-top:6px;line-height:1}
+.sl-date{display:none}
+.section-hed h2 a{color:inherit;text-decoration:none;transition:color .2s}
+.section-hed h2 a:hover{color:var(--red)}
 
 /* ─── PICKS (Mile High Pulse) ─── */
 .picks{padding:30px 0;border-top:1px solid var(--rule)}
@@ -365,8 +368,13 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
   /* Hide E-Edition + Newsletters links on mobile — keep Account + Subscribe only */
   .util-ee, .util-nl{display:none}
   .tt-hero-h{font-size:24px}
-  .split-list{grid-template-columns:1fr;gap:0}
-  .sl-a{padding:14px 0}
+  /* More Top Stories → tiles on mobile: image on top, headline, category, date */
+  .split-list{grid-template-columns:1fr 1fr;gap:14px}
+  .sl-a{display:flex;flex-direction:column;gap:0;padding:0;border-top:none;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:#fff}
+  .sl-img{grid-row:auto;width:100%;height:auto;aspect-ratio:16/10;border-radius:0}
+  .sl-t{padding:10px 11px 0;font-size:14px}
+  .sl-sbt{margin:8px 11px 0}
+  .sl-date{display:block;padding:5px 11px 11px;font-size:11px;letter-spacing:.04em;color:var(--mute);font-weight:600}
   .bd-feat{grid-template-columns:1fr;gap:12px}
   .bd-feat-img{width:100%;height:auto;aspect-ratio:16/9}
   .picks-grid{grid-template-columns:1fr 1fr}
@@ -390,16 +398,16 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
      defaults to order 0 and would appear FIRST, so we set every
      visible block. */
   .tt                       {order:1}   /* hero + 3 list items */
-  .rr-th                    {order:2}   /* Top Headlines */
-  .sports-widget            {order:3}
-  .rr-ee                    {order:4}   /* E-Edition flip card (moved up on mobile) */
-  .rr-nl                    {order:5}   /* Newsletter (moved up on mobile) */
-  .bd-section--politics     {order:6}
-  .bd-section--business     {order:7}
-  .events-widget            {order:8}   /* Plan your week */
-  .bd-section--opinion      {order:9}
-  .bd-section--crime-courts {order:10}
-  .split-list-section       {order:11}
+  .split-list-section       {order:2}   /* More Top Stories (tiles) — above Sports */
+  .rr-th                    {order:3}   /* Top Headlines */
+  .sports-widget            {order:4}
+  .rr-ee                    {order:5}   /* E-Edition cover */
+  .rr-nl                    {order:6}   /* Newsletter */
+  .bd-section--politics     {order:7}
+  .bd-section--business     {order:8}
+  .events-widget            {order:9}   /* Plan your week */
+  .bd-section--opinion      {order:10}
+  .bd-section--crime-courts {order:11}
   .network                  {order:12}
   .picks                    {order:13}
   .rr-ad                    {order:14}  /* Ad slot */
@@ -465,6 +473,17 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
 
       <!-- SECTION BUNDLES -->
       
+<!-- MORE TOP STORIES (live · site-wide /feed/) -->
+      <section class="split-list-section">
+        <div class="section-hed">
+          <h2><a href="latest.html">More Top Stories</a></h2>
+          <a class="more" href="latest.html">View all &rarr;</a>
+        </div>
+        <div class="split-list" id="sl-list">
+          <a class="sl-a" href="https://www.denvergazette.com/2026/05/23/pikes-pick-pledge-drive-open-for-pioneers-museum-anniversary/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/55fb180963ca4bfef09437e32bdbac7d-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Pikes Pick: Pledge drive open for Pioneers Museum  anniversary</span><span class="sl-sbt" style="--sc:#0B0B0F">Local</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/23/arvada-court-apartments-where-neighbors-become-friends/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/Living-room.webp" alt="" loading="lazy" decoding="async"><span class="sl-t">Arvada Court Apartments: Where neighbors become friends</span><span class="sl-sbt" style="--sc:#C8102E">Sponsored</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/mark-kiszla-avs-play-like-chokers-instead-of-champs-in-brutal-playoff-loss-to-vegas/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-06921-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Mark Kiszla: Avs play like chokers instead of champs in brutal playoff loss to Vegas</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/self-inflicted-wounds-put-avalanche-in-massive-hole-as-series-shifts-to-vegas/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-06404-1024x614.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Self-inflicted wounds put Avalanche in massive hole as series shifts to Vegas</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/golden-knights-3-avalanche-1-3-takeaways-from-colorados-game-2-collapse/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-05830-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Golden Knights 3, Avalanche 1: 3 takeaways from Colorado’s Game 2 collapse</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/tina-peters-thanks-polis-for-shortening-her-sentence-calls-colorado-democrats-censure-a-travesty/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/Tina-Peters-Jared-Polis.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Tina Peters thanks Polis for shortening her sentence, calls Colorado Democrats’ censure a ‘travesty’</span><span class="sl-sbt" style="--sc:#626262">Politics</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/trump-administration-releases-40-million-for-colorado-water-project/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/666c74f8892c1.image_.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Trump administration releases $40 million for Colorado water project</span><span class="sl-sbt" style="--sc:#626262">Politics</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/federal-judge-green-lights-jury-visit-to-aurora-detention-center-in-forced-labor-lawsuit/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/AP26083722945297-1-1024x683.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Federal judge green-lights jury visit to Aurora detention center in forced-labor lawsuit</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/highlands-ranch-product-janine-sonis-leads-denver-summit-fc-to-breakthrough-moment-nwsl-insider/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/AP26064032840238.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Highlands Ranch product Janine Sonis leads Denver Summit FC to breakthrough moment | NWSL Insider</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/thornton-police-close-homicide-case-nearly-2-months-after-suspects-suicide/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2025/09/iStock-521989614.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Thornton police close homicide case nearly 2 months after suspect’s suicide</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/teen-killed-in-northeast-denver-shooting-at-montbello-recreation-center/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/052326-dg-news-Shooting-1-1-1024x682.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Teen killed in northeast Denver shooting at Montbello Recreation Center</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/cherry-creek-school-district-leaders-likely-violated-policy-through-travel-vendor-dealings-investigation-finds/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/01/Chris-Smith.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Cherry Creek School District leaders likely violated policy through travel, vendor dealings, investigation finds</span><span class="sl-sbt" style="--sc:#005F64">Education</span></a>
+        </div>
+      </section>
+
 <section class="sports-widget" id="sports">
   <div class="sw-head">
     <div>
@@ -726,16 +745,6 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
       </div>
     </section>
 
-      <!-- MORE TOP STORIES -->
-      <section class="split-list-section">
-        <div class="section-hed">
-          <h2>More Top Stories</h2>
-          <a class="more" href="#">View all →</a>
-        </div>
-        <div class="split-list">
-          <a class="sl-a" href="https://www.denvergazette.com/2026/05/23/pikes-pick-pledge-drive-open-for-pioneers-museum-anniversary/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/55fb180963ca4bfef09437e32bdbac7d-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Pikes Pick: Pledge drive open for Pioneers Museum  anniversary</span><span class="sl-sbt" style="--sc:#0B0B0F">Local</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/23/arvada-court-apartments-where-neighbors-become-friends/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/Living-room.webp" alt="" loading="lazy" decoding="async"><span class="sl-t">Arvada Court Apartments: Where neighbors become friends</span><span class="sl-sbt" style="--sc:#C8102E">Sponsored</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/mark-kiszla-avs-play-like-chokers-instead-of-champs-in-brutal-playoff-loss-to-vegas/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-06921-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Mark Kiszla: Avs play like chokers instead of champs in brutal playoff loss to Vegas</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/self-inflicted-wounds-put-avalanche-in-massive-hole-as-series-shifts-to-vegas/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-06404-1024x614.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Self-inflicted wounds put Avalanche in massive hole as series shifts to Vegas</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/golden-knights-3-avalanche-1-3-takeaways-from-colorados-game-2-collapse/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/05_22_26-avs-knights-05830-scaled.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Golden Knights 3, Avalanche 1: 3 takeaways from Colorado’s Game 2 collapse</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/tina-peters-thanks-polis-for-shortening-her-sentence-calls-colorado-democrats-censure-a-travesty/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/Tina-Peters-Jared-Polis.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Tina Peters thanks Polis for shortening her sentence, calls Colorado Democrats’ censure a ‘travesty’</span><span class="sl-sbt" style="--sc:#626262">Politics</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/trump-administration-releases-40-million-for-colorado-water-project/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/666c74f8892c1.image_.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Trump administration releases $40 million for Colorado water project</span><span class="sl-sbt" style="--sc:#626262">Politics</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/federal-judge-green-lights-jury-visit-to-aurora-detention-center-in-forced-labor-lawsuit/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/AP26083722945297-1-1024x683.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Federal judge green-lights jury visit to Aurora detention center in forced-labor lawsuit</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/highlands-ranch-product-janine-sonis-leads-denver-summit-fc-to-breakthrough-moment-nwsl-insider/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/AP26064032840238.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Highlands Ranch product Janine Sonis leads Denver Summit FC to breakthrough moment | NWSL Insider</span><span class="sl-sbt" style="--sc:#1F4E79">Sports</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/thornton-police-close-homicide-case-nearly-2-months-after-suspects-suicide/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2025/09/iStock-521989614.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Thornton police close homicide case nearly 2 months after suspect’s suicide</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/teen-killed-in-northeast-denver-shooting-at-montbello-recreation-center/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/05/052326-dg-news-Shooting-1-1-1024x682.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Teen killed in northeast Denver shooting at Montbello Recreation Center</span><span class="sl-sbt" style="--sc:#9A0A20">Crime</span></a><a class="sl-a" href="https://www.denvergazette.com/2026/05/22/cherry-creek-school-district-leaders-likely-violated-policy-through-travel-vendor-dealings-investigation-finds/" target="_blank" rel="noopener"><img class="sl-img" src="https://www.denvergazette.com/wp-content/uploads/2026/01/Chris-Smith.jpg" alt="" loading="lazy" decoding="async"><span class="sl-t">Cherry Creek School District leaders likely violated policy through travel, vendor dealings, investigation finds</span><span class="sl-sbt" style="--sc:#005F64">Education</span></a>
-        </div>
-      </section>
 
       <!-- NETWORK (kept static — would need CP / CSG / WEX feeds) -->
       <section class="network">
