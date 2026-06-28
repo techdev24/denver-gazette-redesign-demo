@@ -183,6 +183,31 @@
     }).join('');
   }
 
+  // ── rail category widgets (Politics / Business / Opinion / Crime) ──────────
+  // Each .bd-body gets one lead (.bd-feat) + up to 3 headline rows (.bd-li),
+  // matching the baked markup exactly so the look is unchanged — just live.
+  var RAILS = {
+    'bd-politics': BASE + '/category/politics/feed/',
+    'bd-business': BASE + '/category/business/feed/',
+    'bd-opinion':  BASE + '/category/opinion/feed/',
+    'bd-crime':    BASE + '/category/crime/feed/'
+  };
+  function railFeat(a) {
+    return '<a class="bd-feat" href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
+      '<span class="bd-feat-h">' + esc(a.title) + '</span> ' +
+      (a.img ? '<img class="bd-feat-img" src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async">' : '') +
+      '</a>';
+  }
+  function railLi(a) {
+    return '<a class="bd-li" href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.title) + '</a>';
+  }
+  function fillRail(hostId, items) {
+    var host = document.getElementById(hostId);
+    if (!host || !items.length) return;        // feed empty → keep baked content
+    var feat = items[0], rest = items.slice(1, 4);
+    host.innerHTML = railFeat(feat) + rest.map(railLi).join('');
+  }
+
   // ── boot ───────────────────────────────────────────────────────────────────
   function load(zone, cat, fill) {
     fetchFeed(zone.url)
@@ -202,6 +227,11 @@
     });
     // …plus the section-wide sports feed for the "More from Sports" list.
     load({ url: BASE + '/category/sports/feed/', count: 6 }, 'Sports', fillSportsRest);
+
+    // Rail category widgets — one fetch each (lead + 3 rows).
+    Object.keys(RAILS).forEach(function (id) {
+      load({ url: RAILS[id], count: 4 }, '', function (items) { fillRail(id, items); });
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

@@ -20,9 +20,9 @@
     { label: 'Latest',       href: 'index.html',        key: 'latest' },
     { label: 'Sports',       href: 'sports.html',       key: 'sports' },
     { label: 'OutThere',     href: '#',                 key: 'outthere', cls: 'dgg-out' },
-    { label: 'Politics',     href: '#',                 key: 'politics' },
-    { label: 'Business',     href: '#',                 key: 'business' },
-    { label: 'Opinion',      href: '#',                 key: 'opinion' },
+    { label: 'Politics',     href: 'politics.html',     key: 'politics' },
+    { label: 'Business',     href: 'business.html',     key: 'business' },
+    { label: 'Opinion',      href: 'opinion.html',      key: 'opinion' },
     { label: 'Things To Do', href: 'things-to-do.html', key: 'ttd' },
     { label: 'Obits',        href: '#',                 key: 'obits' }
   ];
@@ -32,6 +32,9 @@
     var p = (location.pathname || '').toLowerCase();
     if (p.indexOf('sports.html') !== -1 || p.indexOf('team.html') !== -1) return 'sports';
     if (p.indexOf('things-to-do.html') !== -1) return 'ttd';
+    if (p.indexOf('politics.html') !== -1) return 'politics';
+    if (p.indexOf('business.html') !== -1) return 'business';
+    if (p.indexOf('opinion.html') !== -1) return 'opinion';
     return 'latest';   // index.html or site root
   }
 
