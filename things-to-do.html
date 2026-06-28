@@ -68,6 +68,20 @@ main{max-width:1400px;margin:0 auto;padding:28px 24px 56px}
 .ttd-venue svg{width:13px;height:13px;flex-shrink:0;opacity:.7}
 .ttd-empty{grid-column:1 / -1;padding:56px 8px;text-align:center;color:var(--mute);font-size:15px}
 
+/* MORE button */
+.ttd-more-wrap{display:flex;justify-content:center;margin-top:26px}
+.ttd-more{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:999px;padding:11px 26px;transition:all .18s}
+.ttd-more:hover{background:var(--ink);color:var(--paper)}
+.ttd-more[hidden]{display:none}
+
+/* editorial stories block */
+.ttd-stories{max-width:1400px;margin:46px auto 0;padding:0 24px}
+.ttd-stories[hidden]{display:none}
+.ttd-stories-head{border-top:1px solid var(--rule);padding-top:26px;margin-bottom:22px}
+.ttd-stories-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--alpen);margin-bottom:7px}
+.ttd-stories-title{font-weight:900;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.015em;color:var(--ink)}
+.ttd-stories .ttd-grid{padding:0}
+
 /* SEO copy block */
 .ttd-about{max-width:1400px;margin:0 auto;padding:8px 24px 48px}
 .ttd-about-inner{border-top:1px solid var(--rule);padding-top:28px;max-width:75ch;color:var(--ink-2);font-size:15px;line-height:1.65}
@@ -124,6 +138,20 @@ footer{padding:36px 24px 24px;border-top:1px solid var(--rule);background:var(--
   <div class="ttd-grid" id="ttd-grid">
     <div class="ttd-empty">Loading this week’s events…</div>
   </div>
+  <div class="ttd-more-wrap">
+    <button class="ttd-more" id="ttd-more" hidden>More events  ↓</button>
+  </div>
+
+  <!-- Editorial "Things To Do" stories, pulled from the Denver Gazette feed -->
+  <section class="ttd-stories" id="ttd-stories">
+    <div class="ttd-stories-head">
+      <div class="ttd-stories-eyebrow">From the Newsroom</div>
+      <h2 class="ttd-stories-title">Things To Do stories &amp; guides</h2>
+    </div>
+    <div class="ttd-grid" id="ttd-editorial">
+      <div class="ttd-empty">Loading stories…</div>
+    </div>
+  </section>
 </main>
 
 <!-- SEO anchor copy -->
@@ -142,6 +170,6 @@ footer{padding:36px 24px 24px;border-top:1px solid var(--rule);background:var(--
   </div>
 </footer>
 
-<script src="assets/things-to-do.js?v=1" defer></script>
+<script src="assets/things-to-do.js?v=2" defer></script>
 </body>
 </html>
