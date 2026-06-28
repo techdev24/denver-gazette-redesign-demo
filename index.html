@@ -283,18 +283,21 @@ main{max-width:1400px;margin:0 auto;padding:20px 24px 40px}
 .rr-ee:focus-within .ee-label-bot,
 .rr-ee:hover .ee-date-bot,
 .rr-ee:focus-within .ee-date-bot{display:block}
-.rr-ee-flip{position:relative;width:100%;aspect-ratio:180/239;perspective:1200px;background:#f6f5ee;cursor:pointer}
-.rr-ee-flip-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
-.rr-ee:hover .rr-ee-flip-inner,
-.rr-ee:focus-within .rr-ee-flip-inner{transform:rotateY(180deg)}
-.rr-ee-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;padding:10px}
-.rr-ee-face img{width:100%;height:100%;object-fit:contain;box-shadow:0 6px 18px -8px rgba(0,0,0,.35),0 1px 3px rgba(0,0,0,.12)}
-.rr-ee-back{transform:rotateY(180deg)}
-.rr-ee-face.ee-empty{background:linear-gradient(155deg,#f2f1ea 0%,#e2e1d8 100%);color:var(--mute)}
-.rr-ee-face.ee-empty::after{content:'Cover not yet uploaded';font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-.rr-ee-foot{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-top:1px solid var(--rule);font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600}
-.rr-ee-foot .flip-hint{display:inline-flex;align-items:center;gap:5px;color:var(--muteer)}
-.rr-ee-foot .flip-hint svg{width:11px;height:11px}
+/* live daily cover (single image — pulls today's e-edition front page) */
+.rr-ee-cover{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:180/239;overflow:hidden;background:#fff;padding:10px;cursor:pointer}
+.rr-ee-cover img{width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .4s ease;box-shadow:0 6px 18px -8px rgba(0,0,0,.35),0 1px 3px rgba(0,0,0,.12)}
+.rr-ee-cover.is-loaded img{opacity:1}
+.rr-ee-cover .ee-cover-loading{position:absolute;font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muteer)}
+.rr-ee-cover.is-loaded .ee-cover-loading,
+.rr-ee-cover.ee-empty img{display:none}
+.rr-ee-cover.ee-empty{background:linear-gradient(155deg,#f2f1ea 0%,#e2e1d8 100%)}
+.rr-ee-cover.ee-empty .ee-cover-loading{display:block;color:var(--mute)}
+/* subscriber call-to-action strip (replaces the old flip hint) */
+.rr-ee-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;border-top:1px solid var(--rule);font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;text-decoration:none;transition:background .2s}
+.rr-ee-foot:hover{background:var(--paper-2,#f2f1ea)}
+.ee-cta-tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--red);padding:4px 7px;border-radius:3px;white-space:nowrap}
+.ee-cta-text{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink);white-space:nowrap}
+.rr-ee-foot:hover .ee-cta-text{color:var(--red)}
 
 .rr-nl{margin-top:18px;border:1px solid var(--rule);border-radius:4px;background:linear-gradient(180deg,var(--paper) 0%, var(--paper-2) 100%);padding:18px 16px}
 .rr-nl-eyebrow{font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px;display:inline-flex;align-items:center;gap:8px}
@@ -834,30 +837,17 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
 
       <!-- E-EDITION (NY Post style flip card: today ⇄ yesterday) -->
       <div class="rr-ee">
-        <a href="#eedition" aria-label="Read today's E-Edition" style="display:block;color:inherit;text-decoration:none">
-          <div class="rr-ee-banner">
-            <span class="ee-label-top">Today's Cover</span>
-            <span class="ee-label-bot">Yesterday's Cover</span>
-            <span class="date ee-date-top">SAT · MAY 23, 2026</span>
-            <span class="date ee-date-bot">FRI · MAY 22, 2026</span>
-          </div>
-          <div class="rr-ee-flip" tabindex="0">
-            <div class="rr-ee-flip-inner">
-              <div class="rr-ee-face rr-ee-front">
-                <img src="dg-covers/today.jpeg" alt="Front page · SAT · MAY 23, 2026" onerror="this.parentElement.classList.add('ee-empty')">
-              </div>
-              <div class="rr-ee-face rr-ee-back">
-                <img src="dg-covers/yesterday.jpeg" alt="Front page · FRI · MAY 22, 2026" onerror="this.parentElement.classList.add('ee-empty')">
-              </div>
-            </div>
-          </div>
-          <div class="rr-ee-foot">
-            <span>Subscribers</span>
-            <span class="flip-hint">
-              Flip for yesterday's cover
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
-            </span>
-          </div>
+        <div class="rr-ee-banner">
+          <span class="ee-label-top">Today's Cover</span>
+          <span class="date" id="cover-date">&mdash;</span>
+        </div>
+        <a class="rr-ee-cover" href="https://daily.denvergazette.com/" target="_blank" rel="noopener" aria-label="Read today's E-Edition">
+          <span class="ee-cover-loading">Loading today&rsquo;s cover&hellip;</span>
+          <img id="cover-img" src="" alt="The Denver Gazette front page" decoding="async">
+        </a>
+        <a class="rr-ee-foot" href="https://daily.denvergazette.com/" target="_blank" rel="noopener">
+          <span class="ee-cta-tag">Subscriber Exclusive</span>
+          <span class="ee-cta-text">Subscribe to read &rarr;</span>
         </a>
       </div>
 
@@ -892,5 +882,6 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
 
 <script src="assets/feeds.js?v=13" defer></script>
 <script src="assets/events.js?v=1" defer></script>
+<script src="assets/cover.js?v=1" defer></script>
 </body>
 </html>
