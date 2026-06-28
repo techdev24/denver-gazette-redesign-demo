@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Things To Do in Denver This Week — Concerts, Sports, Arts & Events | The Denver Gazette</title>
+<meta name="description" content="Your guide to things to do in Denver this week — live concerts at Red Rocks and Ball Arena, Rockies games, theater at the DCPA, comedy, family events and more. Updated daily by The Denver Gazette.">
+<link rel="canonical" href="https://denver-gazette-redesign-demo.pages.dev/things-to-do.html">
+<style>
+:root{
+  --ink:#0B0B0F; --ink-2:#1C1C22;
+  --paper:#FAFAF7; --paper-2:#F2F1EA; --paper-3:#E9E8DF;
+  --rule:#E2E1D8; --rule-2:#CFCEC4;
+  --red:#C8102E; --alpen:#C2410C; --mute:#646468; --muteer:#8C8C8E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration:none;transition:color .2s}
+img,svg{display:block;max-width:100%}
+button{cursor:pointer;font:inherit;border:0;background:transparent;color:inherit}
+
+/* masthead (matches site) */
+.masthead{border-bottom:1px solid var(--rule);background:rgba(250,250,247,.97);position:sticky;top:0;z-index:50;-webkit-backdrop-filter:saturate(1.4) blur(8px);backdrop-filter:saturate(1.4) blur(8px)}
+.mast-row{max-width:1400px;margin:0 auto;padding:12px 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px}
+.mast-logo{display:flex;align-items:center;line-height:1}
+.mast-logo .dg-img{height:46px;width:auto;display:block}
+.mast-nav{display:flex;gap:20px;font-weight:500;font-size:14px}
+.mast-nav a{padding:6px 0;border-bottom:2px solid transparent;transition:border-color .2s,color .2s}
+.mast-nav a:hover{border-bottom-color:var(--red);color:var(--ink)}
+.mast-nav a.active{border-bottom-color:var(--ink);font-weight:600}
+.mast-actions{display:flex;gap:10px;justify-content:flex-end;align-items:center}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);display:grid;place-items:center;color:var(--ink-2);transition:all .2s}
+.icon-btn:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.icon-btn svg{width:15px;height:15px}
+
+/* hero */
+.ttd-hero{background:linear-gradient(180deg,#0B0B0F,#201a2e);color:#fff;position:relative;overflow:hidden}
+.ttd-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 0%,rgba(194,65,12,.30),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(105,20,100,.30),transparent 55%);pointer-events:none}
+.ttd-hero-inner{max-width:1400px;margin:0 auto;padding:48px 24px;position:relative}
+.ttd-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:12px}
+.ttd-hero h1{font-weight:900;font-size:clamp(34px,5.4vw,60px);line-height:.98;letter-spacing:-.025em;text-wrap:balance;max-width:18ch}
+.ttd-hero p{margin-top:14px;font-size:16px;line-height:1.55;color:rgba(255,255,255,.78);max-width:62ch}
+
+/* sticky filter bar */
+.ttd-bar{position:sticky;top:71px;z-index:40;background:rgba(250,250,247,.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.ttd-bar-inner{max-width:1400px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ttd-filters{display:flex;gap:8px;flex-wrap:wrap}
+.ttd-chip{font-size:12.5px;letter-spacing:.04em;font-weight:600;color:var(--ink-2);border:1px solid var(--rule-2);border-radius:999px;padding:7px 15px;transition:all .18s}
+.ttd-chip:hover{border-color:var(--ink)}
+.ttd-chip.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ttd-count{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600}
+
+/* grid */
+main{max-width:1400px;margin:0 auto;padding:28px 24px 56px}
+.ttd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.ttd-card{display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--paper);transition:border-color .2s,transform .2s,box-shadow .2s}
+.ttd-card:hover{border-color:var(--ink-2);transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.07)}
+.ttd-thumb{position:relative;width:100%;aspect-ratio:16/10;background:#1F2937;overflow:hidden}
+.ttd-thumb img{width:100%;height:100%;object-fit:cover}
+.ttd-thumb--empty{background:repeating-linear-gradient(135deg,#2b2b33,#2b2b33 8px,#33333c 8px,#33333c 16px)}
+.ttd-type{position:absolute;top:10px;left:10px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--tc);padding:4px 8px;border-radius:3px}
+.ttd-body{padding:13px 15px 17px;display:flex;flex-direction:column;flex:1}
+.ttd-when{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--alpen);font-weight:700}
+.ttd-name{font-weight:900;font-size:16px;line-height:1.18;letter-spacing:-.004em;margin-top:6px;text-wrap:balance}
+.ttd-card:hover .ttd-name{color:var(--red)}
+.ttd-venue{margin-top:auto;padding-top:10px;font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.ttd-venue svg{width:13px;height:13px;flex-shrink:0;opacity:.7}
+.ttd-empty{grid-column:1 / -1;padding:56px 8px;text-align:center;color:var(--mute);font-size:15px}
+
+/* SEO copy block */
+.ttd-about{max-width:1400px;margin:0 auto;padding:8px 24px 48px}
+.ttd-about-inner{border-top:1px solid var(--rule);padding-top:28px;max-width:75ch;color:var(--ink-2);font-size:15px;line-height:1.65}
+.ttd-about-inner h2{font-weight:900;font-size:22px;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px}
+.ttd-about-inner p{margin-bottom:14px}
+.ttd-about-inner strong{color:var(--ink)}
+
+footer{padding:36px 24px 24px;border-top:1px solid var(--rule);background:var(--paper)}
+.foot-bottom{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;font-size:11px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.foot-bottom .dds{color:var(--ink);font-weight:600}
+
+@media (max-width:1100px){ .ttd-grid{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:820px){ .ttd-grid{grid-template-columns:repeat(2,1fr)} .mast-nav{display:none} .mast-row{grid-template-columns:auto 1fr auto;padding:10px 14px} .ttd-bar{top:63px} main{padding:18px 14px 40px} .ttd-hero-inner{padding:32px 16px} }
+@media (max-width:520px){ .ttd-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mast-row">
+    <a href="index.html" class="mast-logo" aria-label="The Denver Gazette">
+      <img class="dg-img" src="https://www.denvergazette.com/wp-content/uploads/2025/06/1f65d0d8-f5bf-11ed-a1fe-2f51df8053fb.webp" alt="The Denver Gazette" referrerpolicy="no-referrer">
+    </a>
+    <nav class="mast-nav">
+      <a href="index.html">Latest</a>
+      <a href="sports.html">Sports</a>
+      <a href="index.html">Politics</a>
+      <a href="index.html">Business</a>
+      <a href="things-to-do.html" class="active">Things To Do</a>
+    </nav>
+    <div class="mast-actions">
+      <button class="icon-btn" title="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <button class="icon-btn" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<section class="ttd-hero">
+  <div class="ttd-hero-inner">
+    <div class="ttd-eyebrow">The Denver Gazette · Updated daily</div>
+    <h1>Things To Do in Denver This Week</h1>
+    <p>The concerts, games, shows and happenings worth your time across the Mile High City — from Red Rocks and Ball Arena to the DCPA, Coors Field and the neighborhood stages. Pick a category and plan your week.</p>
+  </div>
+</section>
+
+<div class="ttd-bar">
+  <div class="ttd-bar-inner">
+    <div class="ttd-filters" id="ttd-filters"></div>
+    <div class="ttd-count" id="ttd-count"></div>
+  </div>
+</div>
+
+<main>
+  <div class="ttd-grid" id="ttd-grid">
+    <div class="ttd-empty">Loading this week’s events…</div>
+  </div>
+</main>
+
+<!-- SEO anchor copy -->
+<section class="ttd-about">
+  <div class="ttd-about-inner">
+    <h2>Your guide to what’s happening in Denver</h2>
+    <p>Looking for <strong>things to do in Denver</strong> this weekend or this week? The Denver Gazette tracks live events across the metro so you don’t have to dig through a dozen ticket sites. We pull together <strong>concerts</strong> at Red Rocks Amphitheatre, Mission Ballroom, the Ogden and the Bluebird; <strong>Colorado Rockies</strong> baseball at Coors Field and other pro and college sports; <strong>theater, dance and comedy</strong> at the Denver Center for the Performing Arts and venues across the city; plus family-friendly festivals, fairs and exhibitions.</p>
+    <p>The list above refreshes daily and always shows the next seven days, so whether you’re planning a date night, a night out with friends, or a weekend with the kids, you’ll find something happening near you. Tap a category to narrow things down, then click any event for tickets and details.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-bottom">
+    <span>© The Denver Gazette</span>
+    <span class="dds">Powered by Digital Desk Services</span>
+  </div>
+</footer>
+
+<script src="assets/things-to-do.js?v=1" defer></script>
+</body>
+</html>
