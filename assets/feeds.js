@@ -57,6 +57,11 @@
     var days = Math.floor(s / 86400);
     return days === 1 ? '1 day ago' : days + ' days ago';
   }
+  function shortDate(pub) {
+    if (!pub) return '';
+    var d = new Date(pub); if (isNaN(d)) return '';
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
 
   // Image: media:content → media:thumbnail → enclosure → first <img> in content:encoded/description.
   function imageOf(item) {
@@ -94,7 +99,8 @@
         dek: truncate(stripTags(decode(text(it, 'description'))), 180),
         img: imageOf(it),
         cat: categoryOf(it, fallbackCat),
-        time: ago(text(it, 'pubDate'))
+        time: ago(text(it, 'pubDate')),
+        date: shortDate(text(it, 'pubDate'))
       };
     });
   }
@@ -208,6 +214,23 @@
     host.innerHTML = railFeat(feat) + rest.map(railLi).join('');
   }
 
+  // ── "More Top Stories" widget (site-wide feed) ─────────────────────────────
+  // Desktop keeps the small thumb+headline+category row; the date span is hidden
+  // on desktop and revealed on mobile (where the row becomes a tile).
+  function moreTopCard(a) {
+    return '<a class="sl-a" href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
+      (a.img ? '<img class="sl-img" src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async" onerror="this.style.background=\'#1F2937\';this.removeAttribute(\'src\')">' : '<img class="sl-img" alt="">') +
+      '<span class="sl-t">' + esc(a.title) + '</span>' +
+      '<span class="sl-sbt" style="--sc:' + color(a.cat || 'local') + '">' + esc(a.cat || 'News') + '</span>' +
+      '<span class="sl-date">' + esc(a.date || a.time) + '</span>' +
+      '</a>';
+  }
+  function fillMoreTop(items) {
+    var host = document.getElementById('sl-list');
+    if (!host || !items.length) return;
+    host.innerHTML = items.map(moreTopCard).join('');
+  }
+
   // ── boot ───────────────────────────────────────────────────────────────────
   function load(zone, cat, fill) {
     fetchFeed(zone.url)
@@ -232,6 +255,9 @@
     Object.keys(RAILS).forEach(function (id) {
       load({ url: RAILS[id], count: 4 }, '', function (items) { fillRail(id, items); });
     });
+
+    // "More Top Stories" — site-wide latest feed (12 cards).
+    load({ url: BASE + '/feed/', count: 12 }, '', fillMoreTop);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

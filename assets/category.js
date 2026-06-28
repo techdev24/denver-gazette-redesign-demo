@@ -23,6 +23,10 @@
     '.cat-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:700;margin-bottom:11px}',
     '.cat-hero h1{font-weight:900;font-size:clamp(32px,5vw,54px);line-height:1;letter-spacing:-.025em;margin:0}',
     '.cat-hero p{margin:13px 0 0;font-size:16px;line-height:1.5;color:rgba(255,255,255,.8);max-width:60ch}',
+    '.cat-slim{max-width:1400px;margin:0 auto;padding:30px 24px 0}',
+    '.cat-slim .cat-eyebrow{color:var(--alpen,#C2410C)}',
+    '.cat-slim h1{font-weight:900;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.022em;line-height:1;border-bottom:3px solid var(--cc,#C8102E);padding-bottom:14px;margin:0}',
+    '.cat-slim p{margin:13px 0 0;font-size:15px;line-height:1.5;color:var(--mute,#646468);max-width:70ch}',
     '.cat-main{max-width:1400px;margin:0 auto;padding:28px 24px 56px}',
     '.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}',
     '.cat-card{display:flex;flex-direction:column;border:1px solid var(--rule,#E2E1D8);border-radius:6px;overflow:hidden;background:#fff;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s,box-shadow .2s}',
@@ -95,14 +99,21 @@
 
   function build() {
     var s=document.createElement('style'); s.textContent=CSS; document.head.appendChild(s);
-    root.innerHTML =
-      '<section class="cat-hero" style="--cc:'+(cfg.color||'#C8102E')+'">'+
-        '<div class="cat-hero-inner">'+
-          '<div class="cat-eyebrow">The Denver Gazette</div>'+
-          '<h1>'+esc(cfg.name)+'</h1>'+
-          (cfg.tagline?'<p>'+esc(cfg.tagline)+'</p>':'')+
-        '</div>'+
-      '</section>'+
+    var col = cfg.color || '#C8102E';
+    var head = cfg.compact
+      ? ('<header class="cat-slim" style="--cc:'+col+'">'+
+           '<div class="cat-eyebrow">The Denver Gazette</div>'+
+           '<h1>'+esc(cfg.name)+'</h1>'+
+           (cfg.tagline?'<p>'+esc(cfg.tagline)+'</p>':'')+
+         '</header>')
+      : ('<section class="cat-hero" style="--cc:'+col+'">'+
+           '<div class="cat-hero-inner">'+
+             '<div class="cat-eyebrow">The Denver Gazette</div>'+
+             '<h1>'+esc(cfg.name)+'</h1>'+
+             (cfg.tagline?'<p>'+esc(cfg.tagline)+'</p>':'')+
+           '</div>'+
+         '</section>');
+    root.innerHTML = head +
       '<main class="cat-main"><div class="cat-grid" id="cat-grid"><div class="cat-empty">Loading the latest '+esc(cfg.name)+'…</div></div></main>'+
       '<footer class="cat-foot"><div class="cat-foot-in"><span>© The Denver Gazette</span><span class="dds">Powered by Digital Desk Services</span></div></footer>';
 

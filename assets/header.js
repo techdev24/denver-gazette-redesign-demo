@@ -17,7 +17,7 @@
 
   // nav model — real pages link out, placeholders stay on '#'
   var NAV = [
-    { label: 'Latest',       href: 'index.html',        key: 'latest' },
+    { label: 'Latest',       href: 'latest.html',       key: 'latest' },
     { label: 'Sports',       href: 'sports.html',       key: 'sports' },
     { label: 'OutThere',     href: '#',                 key: 'outthere', cls: 'dgg-out' },
     { label: 'Politics',     href: 'politics.html',     key: 'politics' },
@@ -32,6 +32,7 @@
     var p = (location.pathname || '').toLowerCase();
     if (p.indexOf('sports.html') !== -1 || p.indexOf('team.html') !== -1) return 'sports';
     if (p.indexOf('things-to-do.html') !== -1) return 'ttd';
+    if (p.indexOf('latest.html') !== -1) return 'latest';
     if (p.indexOf('politics.html') !== -1) return 'politics';
     if (p.indexOf('business.html') !== -1) return 'business';
     if (p.indexOf('opinion.html') !== -1) return 'opinion';
