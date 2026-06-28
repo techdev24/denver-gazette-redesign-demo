@@ -292,12 +292,11 @@ main{max-width:1400px;margin:0 auto;padding:20px 24px 40px}
 .rr-ee-cover.ee-empty img{display:none}
 .rr-ee-cover.ee-empty{background:linear-gradient(155deg,#f2f1ea 0%,#e2e1d8 100%)}
 .rr-ee-cover.ee-empty .ee-cover-loading{display:block;color:var(--mute)}
-/* subscriber call-to-action strip (replaces the old flip hint) */
-.rr-ee-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;border-top:1px solid var(--rule);font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;text-decoration:none;transition:background .2s}
-.rr-ee-foot:hover{background:var(--paper-2,#f2f1ea)}
-.ee-cta-tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--red);padding:4px 7px;border-radius:3px;white-space:nowrap}
-.ee-cta-text{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink);white-space:nowrap}
-.rr-ee-foot:hover .ee-cta-text{color:var(--red)}
+/* subscriber call-to-action (stacked: eyebrow + full-width button) */
+.rr-ee-foot{display:flex;flex-direction:column;align-items:stretch;gap:7px;padding:12px;border-top:1px solid var(--rule);font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;text-decoration:none}
+.ee-cta-tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muteer);text-align:center}
+.ee-cta-btn{display:block;text-align:center;background:var(--red);color:#fff;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;padding:9px 8px;border-radius:4px;transition:background .2s;white-space:nowrap}
+.rr-ee-foot:hover .ee-cta-btn{background:#a00d24}
 
 .rr-nl{margin-top:18px;border:1px solid var(--rule);border-radius:4px;background:linear-gradient(180deg,var(--paper) 0%, var(--paper-2) 100%);padding:18px 16px}
 .rr-nl-eyebrow{font-family:'Unify Sans','Helvetica Neue','Arial Nova',Helvetica,Arial,sans-serif;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px;display:inline-flex;align-items:center;gap:8px}
@@ -847,7 +846,7 @@ footer{padding:40px 24px 24px;border-top:1px solid var(--rule);background:var(--
         </a>
         <a class="rr-ee-foot" href="https://daily.denvergazette.com/" target="_blank" rel="noopener">
           <span class="ee-cta-tag">Subscriber Exclusive</span>
-          <span class="ee-cta-text">Subscribe to read &rarr;</span>
+          <span class="ee-cta-btn">Subscribe to Read &rarr;</span>
         </a>
       </div>
 
