@@ -19,7 +19,7 @@
   var NAV = [
     { label: 'Latest',       href: 'latest.html',       key: 'latest' },
     { label: 'Sports',       href: 'sports.html',       key: 'sports' },
-    { label: 'OutThere',     href: '#',                 key: 'outthere', cls: 'dgg-out' },
+    { label: 'OutThere',     href: 'outtherecolorado.html', key: 'outthere', cls: 'dgg-out' },
     { label: 'Politics',     href: 'politics.html',     key: 'politics' },
     { label: 'Business',     href: 'business.html',     key: 'business' },
     { label: 'Opinion',      href: 'opinion.html',      key: 'opinion' },
@@ -32,6 +32,7 @@
     var p = (location.pathname || '').toLowerCase();
     if (p.indexOf('sports.html') !== -1 || p.indexOf('team.html') !== -1) return 'sports';
     if (p.indexOf('things-to-do.html') !== -1) return 'ttd';
+    if (p.indexOf('outtherecolorado') !== -1) return 'outthere';
     if (p.indexOf('latest.html') !== -1) return 'latest';
     if (p.indexOf('politics.html') !== -1) return 'politics';
     if (p.indexOf('business.html') !== -1) return 'business';
@@ -69,7 +70,13 @@
     '.dgg-icon{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule,#E2E1D8);display:grid;place-items:center;color:var(--ink-2,#1C1C22);transition:all .2s;background:transparent;cursor:pointer}',
     '.dgg-icon:hover{border-color:var(--ink,#0B0B0F);background:var(--ink,#0B0B0F);color:var(--paper,#FAFAF7)}',
     '.dgg-icon svg{width:15px;height:15px}',
-    '@media (max-width:900px){.dgg-nav{display:none}.dgg-mast-row{grid-template-columns:auto 1fr auto;padding:10px 14px}.dgg-util-row{padding:6px 14px;gap:8px;font-size:10px}.dgg-util-left .dgg-weather{display:none}}'
+    // global masthead leaderboard ad (compliant label + reserved height)
+    '.dgg-adwrap{background:var(--paper-2,#F2F1EA);border-bottom:1px solid var(--rule,#E2E1D8);text-align:center;padding:10px 14px}',
+    '.dgg-adlabel{font:10px/1 \'Unify Sans\',Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute,#9A9A9A);margin-bottom:6px;display:none}',
+    '.dgg-adwrap.is-filled .dgg-adlabel{display:block}',
+    '.dgg-adslot{margin:0 auto;display:flex;align-items:center;justify-content:center;min-height:90px;max-width:970px}',
+    '.dgg-adph{width:100%;min-height:90px;border:1px dashed var(--rule,#D8D7CF);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--mute,#9A9A9A);font:12px/1.4 \'Unify Sans\',Arial,sans-serif;letter-spacing:.04em;background:repeating-linear-gradient(45deg,transparent 0,transparent 10px,rgba(0,0,0,.015) 10px,rgba(0,0,0,.015) 20px)}',
+    '@media (max-width:900px){.dgg-nav{display:none}.dgg-mast-row{grid-template-columns:auto 1fr auto;padding:10px 14px}.dgg-util-row{padding:6px 14px;gap:8px;font-size:10px}.dgg-util-left .dgg-weather{display:none}.dgg-adslot,.dgg-adph{min-height:50px}}'
   ].join('');
 
   function navHTML() {
@@ -109,7 +116,14 @@
             '<button class="dgg-icon" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>' +
           '</div>' +
         '</div>' +
-      '</header>';
+      '</header>' +
+      // GLOBAL masthead leaderboard ad. Reserved height = no layout shift (CLS).
+      // PRODUCTION: replace .dgg-adph with the GPT slot div and reveal the label
+      // only on slotRenderEnded when !event.isEmpty (so empty fills show nothing).
+      '<div class="dgg-adwrap is-filled" id="dgg-masthead-ad">' +
+        '<div class="dgg-adlabel">Advertisement</div>' +
+        '<div class="dgg-adslot"><div class="dgg-adph">Masthead ad &middot; 970&times;90 leaderboard</div></div>' +
+      '</div>';
   }
 
   function inject() {
@@ -120,6 +134,13 @@
       (document.head || document.documentElement).appendChild(s);
     }
     if (document.body) document.body.insertAdjacentHTML('afterbegin', html());
+    // load the GLOBAL footer (single source of truth, same model as this header)
+    if (!document.getElementById('dgg-footer-js')) {
+      var fjs = document.createElement('script');
+      fjs.id = 'dgg-footer-js';
+      fjs.src = 'assets/footer.js?v=1';
+      if (document.body) document.body.appendChild(fjs);
+    }
   }
 
   if (document.body) inject();
